@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title><%= title %></title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="/stylesheets/style.css" rel="stylesheet">
+		<link href="/assets/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+  </head>
+
+  <body>
+
+    <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+      <h5 class="my-0 mr-md-auto font-weight-normal">Quick Weather Admin</h5>
+      <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="#weather">Weather</a>
+        <a class="p-2 text-dark" href="#survey">Survey</a>
+      </nav>
+    </div>
+
+    <div class="container">
+      <div id="weather" class="section-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h1 class="display-4">Weather Results</h1>
+        <p class="lead">See the results of last 10 times your service has been used</p>
+      </div>
+			<div class="row table-responsive">
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th scope="col">Time</th>
+							<th scope="col">Postcode</th>
+							<th scope="col">Weather Details</th>
+							<th scope="col" class="text-right">Temperature (&deg;C)</th>
+							<th scope="col" class="text-right">Humidity (%)</th>
+						</tr>
+					</thead>
+					<tbody>
+						<%
+							for (weather of weatherDetailsArr) {
+							%>
+							<tr>
+								<th scope="row"><%= moment.tz(weather.timestamp, 'Australia/Sydney').format('L LTS') %></th>
+								<td><%= weather.postcode %></td>
+								<td><%= weather.weather %></td>
+								<td class="text-right"><%= weather.weathertemp %></td>
+								<td class="text-right"><%= weather.weatherhumidity %></td>
+							</tr>
+							<%
+							}
+						%>
+					</tbody>
+				</table>
+			</div>
+			<br>
+			<div id="survey" class="section-header px-3 py-3 pt-md-5 pb-md-4 mx-auto text-center">
+        <h2 class="display-4">Survey Results</h1>
+        <p class="lead">See the ratings and comments users have been leaving about your service</p>
+      </div>
+			<div class="row">
+				<div class="col-md-6 col-12">
+					<h4 class="text-center">Ratings</h1>
+					<canvas id="ratingsChart"></canvas>
+				</div>
+				<div class="col-md-6 col-12">
+					<h4 class="text-center">Comments</h1>
+						<div class="row table-responsive">
+							<table class="table table-striped">
+								<thead>
+									<tr>
+										<th scope="col">Transcription</th>
+										<th scope="col"></th>
+									</tr>
+								</thead>
+								<tbody>
+									<%
+										for (comment of commentsArr) {
+										%>
+										<tr>
+											<td><%= comment.comment %></td>
+											<td><a href="<%= comment.commentrecordinglink %>" target="_blank"><i class="fa fa-play" aria-hidden="true"></i></a></td>
+										</tr>
+										<%
+										}
+									%>
+								</tbody>
+							</table>
+						</div>
+				</div>
+    </div>
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+		<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="/assets/bootstrap/js/bootstrap.min.js"></script>
+		<script src="/assets/Charts/js/Chart.min.js"></script>
+		<script>
+			var ratingsArr = <%- JSON.stringify(ratingsArr) %>
+		</script>
+    <script src="/javascripts/index.js"></script>
+  </body>
+</html>
